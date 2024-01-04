@@ -5,9 +5,11 @@
     include_once './app/utils/utilitaire.php';
     // importer les model (requete sql)
     include_once './app/model/model_roles.php';
+    include_once './app/model/model_utilisateur.php';
     // import des controllers
     include_once './app/controller/ctrl_page.php';
     include_once './app/controller/ctrl_roles.php';
+    include_once './app/controller/ctrl_utilisateur.php';
     // utilisation de session_start(pour gérer la connexion au serveur)
     session_start();
     // Analyse de l'url avec parse_url() et retourne ses composants
@@ -29,6 +31,9 @@
             break;
         case '/mvccyber/roles/update/id':
             updateRoles($bdd);
+            break;
+        case '/mvccyber/utilisateur/add':
+            insertUtilisateur($bdd);
             break;
         default:
             error();

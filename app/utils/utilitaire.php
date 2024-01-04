@@ -7,5 +7,8 @@
         echo '<pre>';
         var_dump($content);
         echo '</pre>';
+        if($param){
+            die;
+        }
     }
 ?>

@@ -6,7 +6,8 @@
     <title>Document</title>
 </head>
 <body>
-<h1>Bienvenue sur ce super site</h1>
+    <?php include "./app/vue/vue_navbar.php"?>
+    <h1>Bienvenue sur ce super site</h1>
 
 </body>
 </html>

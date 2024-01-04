@@ -6,6 +6,7 @@
     <title>Modifier un role</title>
 </head>
 <body>
+    <?php include "./app/vue/vue_navbar.php"?>
     <h1>Modifier un role :</h1>
         <form action="" method="post">
 
