@@ -24,7 +24,7 @@
             exemple();
             break;
         case '/mvccyber/roles/add':
-            insertRoles($bdd);
+            addRoles($bdd);
             break;
         case '/mvccyber/roles/all':
             showAllRoles($bdd);
@@ -33,7 +33,7 @@
             updateRoles($bdd);
             break;
         case '/mvccyber/utilisateur/add':
-            insertUtilisateur($bdd);
+            addUtilisateur($bdd);
             break;
         default:
             error();

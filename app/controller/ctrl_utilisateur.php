@@ -1,33 +1,40 @@
 <?php
     // fonction pour gérer l'ajout des utilisateurs en bdd
-    function insertUtilisateur($bdd){
+    function addUtilisateur($bdd){
         // stocker les messages d'erreur
         $message = "";
         // test si le bouton est cliqué
         if(isset($_POST["submit"])){
             // test si les champs sont remplis
-            if(!empty($_POST["nom_utilisateur"]) AND !empty($_POST["prenom_utilisateur"]) AND !empty($_POST["mail_utilisateur"]) AND !empty($_POST["password_utilisateur"]) AND !empty($_POST["password_verif"])){
+            if(!empty($_POST["nom_utilisateur"]) AND !empty($_POST["prenom_utilisateur"]) AND !empty($_POST["mail_utilisateur"]) AND !empty($_POST["password_utilisateur"]) AND !empty($_POST["password_confirmation"])){
                 // test si les 2 password sont identiques
-                if($_POST["password_utilisateur"]===$_POST["password_verif"]){
-                    // nettoyer mail et password
+                if($_POST["password_utilisateur"]===$_POST["password_confirmation"]){
+                    // nettoyer mail
                     $email = cleanInput($_POST["mail_utilisateur"]);
-                    $password = cleanInput($_POST["password_utilisateur"]);
-                    $password_verif = cleanInput($_POST["password_verif"]);
-                    // nettoyer nom et prenom
-                    $nom = cleanInput($_POST["nom_utilisateur"]);
-                    $prenom = cleanInput($_POST["prenom_utilisateur"]);
-                    // hasher le mdp
-                    $hash = password_hash($password,PASSWORD_DEFAULT);
-                    $hash_verif = password_hash($password_verif,PASSWORD_DEFAULT);
                     // test si l'utilisateur n'existe pas
-                    if(empty(getUtilisateurByMail($bdd,$email))){
+                    if(!getUtilisateurByMail($bdd,$email)){
+                        // nettoyer entrée utilisateur
+                        $nom = cleanInput($_POST["nom_utilisateur"]);
+                        $prenom = cleanInput($_POST["prenom_utilisateur"]);
+                        $password = password_hash(cleanInput($_POST["password_utilisateur"]), PASSWORD_DEFAULT);
+
+                        // test si l'image a été importé
+                        if($_FILES["image_utilisateur"]["tmp_name"] !=""){
+                            $image = "/public/media/".$_FILES["image_utilisateur"]["name"];
+                            // déplacement du fichier image
+                            move_uploaded_file($_FILES["image_utilisateur"]["tmp_name"], $image);
+                        }
+                        // test pas d'image
+                        else{
+                            $image = '/public/media/Capture.PNG';
+                        }
                         // ajouter l'utilisateur en bdd
-                        addUtilisateur($bdd,$nom,$prenom,$email,$hash,$hash_verif);
-                        $message = "l'utilisateur ".$nom .$prenom." a été ajouté en bdd";
+                        insertUtilisateur($bdd,$nom,$prenom,$email,$password,'/public/media/Capture.PNG',1);
+                        $message = "le compte a été ajouté en bdd";
                     }
                     // test si l'utilisateur existe en bdd
                     else{
-                        $message = "l'utilisateur ".$nom .$prenom." existe deja en bdd";
+                        $message = "l'utilisateur existe deja en bdd";
                     }
                 }
                 // test si les mots de passe sont différents
@@ -40,7 +47,6 @@
                 $message = "Veuillez remplir tous les champs du formulaire";
             }
         }
-        
         // importer la vue (fichier html)
         include_once './app/vue/vue_add_utilisateur.php';
     }

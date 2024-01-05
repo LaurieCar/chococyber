@@ -1,6 +1,6 @@
 <?php
     //fonction pour gérer l'ajout des roles en bdd
-    function insertRoles($bdd){
+    function addRoles($bdd){
         // stocker les messages d'erreur
         $message = "";
         // test si le bouton est cliqué
